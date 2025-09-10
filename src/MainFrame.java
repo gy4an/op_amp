@@ -15,6 +15,8 @@ public class MainFrame extends JFrame {
         tabbedPane.addTab("Non-Inverting", new NonInvertingPanel());
         tabbedPane.addTab("Differential", new DifferentialPanel());
         tabbedPane.addTab("Integrator", new IntegratorPanel());
+        tabbedPane.addTab("Current to Voltage", new CurrentToVoltagePanel());
+        tabbedPane.addTab("Voltage to Current", new VoltageToCurrentPanel());
 
         add(tabbedPane);
     }

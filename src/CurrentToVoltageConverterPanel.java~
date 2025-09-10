@@ -1,0 +1,93 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
+
+public class CurrentToVoltageConverterGUI extends JFrame {
+
+    // UI Components
+    private JTextField iinField;
+    private JTextField rfField;
+    private JTextField outputField;
+    private JButton computeButton;
+
+    public CurrentToVoltageConverterGUI() {
+        // Set up the main window (JFrame)
+        setTitle("Current to Voltage Converter");
+        setSize(800, 600);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Use a layered pane to handle the background image and components
+        JLayeredPane layeredPane = new JLayeredPane();
+        layeredPane.setPreferredSize(new Dimension(800, 600));
+
+        // Create the main panel for components
+        JPanel mainPanel = new JPanel();
+        mainPanel.setOpaque(true);
+        mainPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        // Use a transparent panel to hold the image
+        JPanel imagePanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                ImageIcon imageIcon = new ImageIcon(getClass().getResource("CVC_circuit.png")); // Load your image
+                Image image = imageIcon.getImage();
+                g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
+            }
+        };
+
+        // Create the circuit diagram panel on the right
+        JPanel circuitPanel = new JPanel(new BorderLayout());
+        circuitPanel.setPreferredSize(new Dimension(400, 400));
+        circuitPanel.add(new JLabel("Formula: V_o = -I_in * R_f", SwingConstants.CENTER), BorderLayout.NORTH);
+        circuitPanel.add(new JLabel("  ", SwingConstants.CENTER), BorderLayout.CENTER);
+
+        // Add components to the main panel
+        gbc.gridx = 0; gbc.gridy = 0; mainPanel.add(new JLabel("Iin:"), gbc);
+        gbc.gridx = 1; gbc.gridy = 0; iinField = new JTextField(10); mainPanel.add(iinField, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 1; mainPanel.add(new JLabel("Rf:"), gbc);
+        gbc.gridx = 1; gbc.gridy = 1; rfField = new JTextField(10); mainPanel.add(rfField, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 2; gbc.gridwidth = 2;
+        computeButton = new JButton("Compute");
+        mainPanel.add(computeButton, gbc);
+
+        gbc.gridx = 0; gbc.gridy = 3; gbc.gridwidth = 2; mainPanel.add(new JLabel("Output:"), gbc);
+        gbc.gridx = 0; gbc.gridy = 4; gbc.gridwidth = 2;
+        outputField = new JTextField(20);
+        outputField.setEditable(false);
+        mainPanel.add(outputField, gbc);
+
+        // Add action listener to the compute button
+        computeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    double iin = Double.parseDouble(iinField.getText());
+                    double rf = Double.parseDouble(rfField.getText());
+                    double outputVoltage = -iin * rf;
+
+                    DecimalFormat df = new DecimalFormat("#.##");
+                    outputField.setText(df.format(outputVoltage) + " V");
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(null, "Please enter valid numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
+
+        // Add main panel to the frame
+        add(mainPanel);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new CurrentToVoltageConverterGUI().setVisible(true);
+        });
+    }
+}
