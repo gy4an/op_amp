@@ -86,7 +86,7 @@ public class DifferentialPanel extends JPanel {
         imageLabel.setIcon(new ImageIcon(imageIcon.getImage().getScaledInstance(400, 200, Image.SCALE_SMOOTH)));
 
         JLabel formulaLabel = new JLabel("<html><center><b>Formula:</b><br>"
-                + "V<sub>o</sub> = ((R1 + Rf)/R1) × (Rf / (R1 + Rf)) × V<sub>2</sub> − (Rf / R1) × V<sub>1</sub></center></html>",
+                + "V<sub>o</sub> = ((R1 + Rf)/R1) × (R3 / (R2 + R3)) × V<sub>2</sub> − (Rf / R1) × V<sub>1</sub></center></html>",
                 SwingConstants.CENTER);
 
         rightPanel.add(imageLabel, BorderLayout.CENTER);
